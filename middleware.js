@@ -23,6 +23,20 @@ export default withAuth(
     ) {
       return NextResponse.rewrite(new URL("/Denied", req.url));
     }
+
+    if (
+      req.nextUrl.pathname.startsWith("/Member") &&
+      (!token || token.role !== "user")
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
+
+    if (
+      req.nextUrl.pathname.startsWith("/ClientMember") &&
+      (!token || token.role !== "user")
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
   },
   {
     callbacks: {
@@ -36,4 +50,4 @@ export default withAuth(
 
 // config: Là cấu hình chỉ định các tuyến đường mà middleware sẽ được áp dụng.
 // matcher chỉ định các tuyến đường mà middleware sẽ áp dụng.
-export const config = { matcher: ["/AdminPage", "/Nurse"] };
+export const config = { matcher: ["/AdminPage", "/Nurse", "/ClientMember", "/Member"] };
